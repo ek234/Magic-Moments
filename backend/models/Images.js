@@ -7,19 +7,18 @@ const ItemSchema = new Schema({
 		type: String,
 		required: true
 	},
-	tags: [{
+	venue: {
 		type: String,
 		required: false
-	}],
+	},
 	img: {
-		data: Buffer,
-		contentType: String,
+		type: String,
 		required: true
 	},
-	// date:{
-	// 	type: Date,
-	// 	required: true
-	// }
+	date:{
+		type: Date,
+		required: true
+	}
 });
 
 module.exports = Images = mongoose.model("Images", ItemSchema);

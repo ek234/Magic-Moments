@@ -18,6 +18,7 @@ import isWeekend from 'date-fns/isWeekend';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import axios from 'axios';
 
 
 
@@ -47,8 +48,8 @@ export default function SignIn() {
 
 
     const handleSubmit = (event) => {
-        
-        if(file !== ''){
+
+        if (file !== '') {
 
             event.preventDefault();
             var formdata = {
@@ -60,7 +61,10 @@ export default function SignIn() {
 
             console.log(formdata);
 
-            
+            axios.post(" http://localhost:4000/img/", formdata)
+                .then(function (response) {
+                    console.log(response);
+                })
         }
         else {
             alert('Please upload a file');
@@ -125,7 +129,7 @@ export default function SignIn() {
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
-                        <File setFile={setFile}/>
+                        <File setFile={setFile} />
 
 
 
