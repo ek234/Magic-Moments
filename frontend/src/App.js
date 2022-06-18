@@ -1,11 +1,8 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
-import UsersList from "./components/users/UsersList";
-import Home from "./components/common/Home";
-import Register from "./components/common/Register";
-import Navbar from "./components/templates/Navbar";
-import Profile from "./components/users/Profile";
+import Home from "./components/Home";
+import View from "./components/View";
 
 const Layout = () => {
   return (
