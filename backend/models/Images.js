@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ItemSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
 	venue: {
 		type: String,
 		required: false

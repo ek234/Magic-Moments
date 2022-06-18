@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const { spawn } = require("child_process")
 
 // Load User model
 const Img = require("../models/Images");
@@ -22,7 +23,6 @@ const Img = require("../models/Images");
 // Add a user to db
 router.post("/", (req, res) => {
     const newItem = new Img({
-        name: req.body.name,
         venue: req.body.venue,
         date: req.body.date,
         img: req.body.file
@@ -31,6 +31,7 @@ router.post("/", (req, res) => {
     newItem.save()
         .then(item => {
             res.status(200).json(item);
+			const python = spawn( "python3", ["../scripts/facedetect.py"] )
         })
         .catch(err => {
             res.status(400).send(err);

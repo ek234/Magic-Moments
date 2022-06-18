@@ -3,14 +3,6 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ItemSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
-	venue: {
-		type: String,
-		required: false
-	},
 	img: {
 		type: String,
 		required: true
@@ -21,7 +13,7 @@ const ItemSchema = new Schema({
 	}],
 	tags: [{
 		type: String,
-		required: false
+		required: true
 	}],
 	date:{
 		type: Date,
