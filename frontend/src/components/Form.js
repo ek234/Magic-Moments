@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,32 +7,73 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tags from './Tags';
-import Date from './Date';
 import File from './File';
+
+
+import isWeekend from 'date-fns/isWeekend';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 
 
 
 export default function SignIn() {
 
-    const handleSubmit = (event) => {
-        // event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // console.log({
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        // });
 
-        console.log("inside this")
-    };
 
     const theme = createTheme();
-    
+
+    const [name, setName] = React.useState('');
+    const [venue, setVenue] = React.useState('');
+    const [file, setFile] = React.useState('');
+    const [date, setDate] = React.useState(new Date());
+
+    const handleName = (event) => {
+        setName(event.target.value);
+    }
+
+    const handleVenue = (event) => {
+        setVenue(event.target.value);
+    }
+
+
+
+
+
+
+    const handleSubmit = (event) => {
+        
+        if(file !== ''){
+
+            event.preventDefault();
+            var formdata = {
+                name: name,
+                venue: venue,
+                file: file,
+                date: date
+            }
+
+            console.log(formdata);
+
+            
+        }
+        else {
+            alert('Please upload a file');
+        }
+
+
+
+
+    }
+
+
+
+
 
 
     return (
@@ -60,6 +100,7 @@ export default function SignIn() {
                             label="Like Felicity..."
                             name="name"
                             autoFocus
+                            onChange={handleName}
                         />
                         <TextField
                             margin="normal"
@@ -69,10 +110,22 @@ export default function SignIn() {
                             label="Felicity Ground..."
                             name="venue"
                             autoFocus
+                            onChange={handleVenue}
                         />
 
-                        {/* <Date/> */}
-                        <File/>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <StaticDatePicker
+                                orientation="landscape"
+                                openTo="day"
+                                value={date}
+                                shouldDisableDate={isWeekend}
+                                onChange={(newValue) => {
+                                    setDate(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                        <File setFile={setFile}/>
 
 
 

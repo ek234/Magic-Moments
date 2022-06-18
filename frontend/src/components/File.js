@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 //     console.log('RESULT', reader.result)
 // }
 
-export default function Upload() {
+export default function Upload(props) {
     // fileObj = [[]];
     // fileArray = [];
     // constructor(props) {
@@ -52,6 +52,7 @@ export default function Upload() {
     const handleFileRead = async (event) => {
         const file = event.target.files[0]
         const base64 = await convertBase64(file)
+        props.setFile(base64)
         console.log(base64)
     }
 
