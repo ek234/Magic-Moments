@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
 import Home from "./components/Home";
-import View from "./components/View";
+import Gallery from "./components/Gallery";
+import Navbar  from "./templates/Navbar";
 
 const Layout = () => {
   return (
@@ -21,9 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="users" element={<UsersList />} />
-          <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="gallery" element={<Gallery />} />
         </Route>
       </Routes>
     </BrowserRouter>

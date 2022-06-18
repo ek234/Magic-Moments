@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
+import Form from "./Form"
 
 const Home = (props) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
 
-  useEffect(() => {
-    setName("Dass TAs");
-  }, []);
 
-  return <div style={{ textAlign: "center" }}>Happy Coding - {name}</div>;
+  return <div style={{ textAlign: "center" }}>
+    <Form />
+  </div>;
 };
 
 export default Home;
