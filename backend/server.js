@@ -4,11 +4,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const PORT = 4000;
-const DB_NAME = "tutorial"
+const DB_NAME = "images"
+
 
 // routes
 var testAPIRouter = require("./routes/testAPI");
-var UserRouter = require("./routes/Users");
+var ImageRouter = require("./routes/Images");
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -23,7 +25,8 @@ connection.once('open', function() {
 
 // setup API endpoints
 app.use("/testAPI", testAPIRouter);
-app.use("/user", UserRouter);
+app.use("/img", ImageRouter);
+
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

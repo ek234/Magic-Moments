@@ -13,19 +13,28 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tags from './Tags';
+import Date from './Date';
+import File from './File';
 
 
-const theme = createTheme();
+
 
 export default function SignIn() {
+
     const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        // event.preventDefault();
+        // const data = new FormData(event.currentTarget);
+        // console.log({
+        //     email: data.get('email'),
+        //     password: data.get('password'),
+        // });
+
+        console.log("inside this")
     };
+
+    const theme = createTheme();
+    
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -39,27 +48,36 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h1" variant="h5">
                         Upload your Moments...
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             id="name"
-                            label="Trip to Hollywood..."
+                            label="Like Felicity..."
                             name="name"
-                            autoComplete="Trip to Hollywood..."
                             autoFocus
                         />
-                        <Tags/>
-                        
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="venue"
+                            label="Felicity Ground..."
+                            name="venue"
+                            autoFocus
+                        />
+
+                        {/* <Date/> */}
+                        <File/>
+
+
+
                         <Button
-                            type="submit"
+                            onClick={handleSubmit}
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}

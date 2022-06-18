@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 // Load User model
-const User = require("../models/Users");
+const User = require("../models/Images");
 
 // GET request 
 // Getting all the users
