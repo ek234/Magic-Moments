@@ -34,6 +34,36 @@ async function pyStart () {
 	} )
 }
 
+router.post("/addtag", (req, res) => {
+	var match = { _uid: req.body.id };
+	Gal.findOne( match )
+		.then( img => {
+			var tags = imp['tags'].concat(req.body.addtag)
+			Gal.updateOne( match, { $set: { 'tags': tags } }, function(err, res) {
+				if (err) {
+					console.log(err)
+				}
+				else {
+					res.status(200).json(status: 'success')
+				}
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+
+	var myquery = { _uid: req.body.id };
+	var newvalues = { $set: { address: "Canyon 123" } };
+  dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
+    newItem.save()
+        .then(item => {
+            res.status(200).json(item);
+			pyStart()
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+});
 // POST request 
 // Add a user to db
 router.post("/postImage", (req, res) => {
