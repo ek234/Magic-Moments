@@ -98,12 +98,12 @@ export default function Album() {
                                             // 16:9
                                             pt: '56.25%',
                                         }}
-                                        image="https://source.unsplash.com/random"
+                                        image={card.img}
                                         alt="random"
                                     />
                                     <CardContent sx={{ flexGrow: 1 }}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {card.name}, &nbsp; {card.venue}, &nbsp; {card.date}
+                                            {card.occasion}, &nbsp; {new Date(card.date).toLocaleDateString()}, &nbsp; {card.tags.map((tag) => ("#" + tag + " "))}
                                         </Typography>
                                         {/* <Typography>
                                             This is a media card. You can use this section to describe the
