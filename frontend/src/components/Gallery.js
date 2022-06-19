@@ -18,6 +18,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import axios from 'axios';
+import { TextField } from '@mui/material';
+import Fuse from 'fuse.js'
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -26,30 +29,56 @@ const theme = createTheme();
 export default function Album() {
 
     const [images, setImages] = useState([]);
+    const [allImages, setAllImages] = useState([]);
 	useEffect(() => {
 		axios.get("http://localhost:4000/img/getimages")
 			.then(res => {
 				setImages(res.data);
+                setAllImages(res.data);
 				console.log(res.data);
 			})
 			.catch(err => {
 				console.log(err);
 			})
-	}, [])
+	}, []);
+
+    function handleFuzzySearch() {
+        console.log("fuzzy searching");
+        let search = document.getElementById("fuzzySearch").value;
+        console.log(search);
+        console.log(allImages);
+        // covert search to lowercase
+        search = search.toLowerCase();
+        if (search === "") {
+            setImages(allImages);
+        } else {
+            const fuse = new Fuse(allImages, {
+                keys: ["occasion"]
+            });
+            // console.log(foods.name);
+            let result = fuse.search(search);
+            let newCards = [];
+            for (var i = 0; i < result.length; i++) {
+                newCards.push(result[i].item);
+            }
+            console.log(newCards);
+            setImages(newCards);
+        }
+    }
 
 
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="relative">
+            {/* <AppBar position="relative">
                 <Toolbar>
                     <CameraIcon sx={{ mr: 2 }} />
                     <Typography variant="h6" color="inherit" noWrap>
                         Album layout
                     </Typography>
                 </Toolbar>
-            </AppBar>
+            </AppBar> */}
             <main>
                 {/* Hero unit */}
                 <Box
@@ -86,6 +115,27 @@ export default function Album() {
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="md">
                     {/* End hero unit */}
+                    <Grid container spacing={4}>
+                        <Grid item xs={4}>
+                            <TextField
+                                id="fuzzySearch"
+                                label="Fuzzy Search"
+                                type="search"
+                                variant="outlined"
+                                size="small"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleFuzzySearch()}
+                            >
+                                <SearchIcon />
+                            </Button>
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={4}>
                         {images.map((card) => (
                             <Grid item key={card} xs={12} sm={6} md={4}>
