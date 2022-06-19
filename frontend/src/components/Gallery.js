@@ -34,17 +34,17 @@ export default function Album() {
     const [showFaces, setShowFaces] = useState(false);
     const [templates, setTemplates] = useState([]);
 
-	useEffect(() => {
-		axios.get("http://localhost:4000/img/getimages")
-			.then(res => {
-				setImages(res.data);
+    useEffect(() => {
+        axios.get("http://localhost:4000/img/getimages")
+            .then(res => {
+                setImages(res.data);
                 setAllImages(res.data);
-				console.log(res.data);
-			})
-			.catch(err => {
-				console.log(err);
-			})
-	}, []);
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, []);
     const [taginput, setTagInput] = useState(false);
     const [temptag, setTempTag] = useState('');
     const AddTag = () => {
@@ -52,13 +52,18 @@ export default function Album() {
         var id = {
             id: localStorage.getItem('tempimageid'),
             addtag: temptag
-
         }
+        console.log(id);
 
         axios.post("http://localhost:4000/img/addtag", id)
             .then(res => {
                 console.log(res.data);
+                window.location.reload();
             })
+            .catch(err => {
+                console.log(err);
+            }
+            )
 
 
     }
@@ -200,28 +205,23 @@ export default function Album() {
                                         </Typography> */}
                                     </CardContent>
                                     <CardActions>
-                                    <Button size="small" onClick={(e) => {
-                                        setTagInput(!taginput);
-                                        localStorage.setItem("tempimageid", card.id);
+                                        <Button size="small" onClick={(e) => {
+                                            setTagInput(!taginput);
+                                            localStorage.setItem("tempimageid", card._id);
                                         }
                                         }>
                                             Add Tag
-                                    </Button>
+                                        </Button>
                                     </CardActions>
                                     <Box component="form" noValidate sx={{ mt: 1 }} >
                                         {taginput ? (
                                             <div>
                                                 <TextField id="outlined" size="small" fullWidth onChange={(e) => {
-                                                    setTempTag(e);
-                                                }}
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                            <Button size="small" onClick={AddTag}>
-                                                                <AddIcon />
-                                                            </Button>
-
-                                                        ),
-                                                    }} />
+                                                    setTempTag(e.target.value);
+                                                }} />
+                                                <Button size="small" onClick={AddTag}>
+                                                    <AddIcon />
+                                                </Button>
 
                                             </div>
                                         ) : null}

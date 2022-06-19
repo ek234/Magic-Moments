@@ -34,17 +34,15 @@ async function pyStart () {
 	} )
 }
 
-router.post("/addtag", (req, res) => {
-	var match = { _uid: req.body.id };
+router.post("/addtag", (req, res1) => {
+    console.log(req.body);
+	var match = { _id: req.body.id };
 	Gal.findOne( match )
 		.then( img => {
-			var tags = imp['tags'].concat(req.body.addtag)
+			var tags = img['tags'].concat(req.body.addtag)
 			Gal.updateOne( match, { $set: { 'tags': tags } }, function(err, res) {
 				if (err) {
 					console.log(err)
-				}
-				else {
-					res.status(200).json({status: 'success'})
 				}
 			})
 		})
