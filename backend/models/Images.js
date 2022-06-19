@@ -5,21 +5,16 @@ const Schema = mongoose.Schema;
 const ItemSchema = new Schema({
 	name: {
 		type: String,
-		unique: true,
 		required: true
 	},
-	people: [{
-		type: Long,
-		required: false
-	}],
-	tags: [{
+	venue: {
 		type: String,
 		required: false
-	}],
-	image:{
-		type: Buffer,
+	},
+	img: {
+		type: String,
 		required: true
-	}
+	},
 	date:{
 		type: Date,
 		required: true

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,24 +7,78 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tags from './Tags';
+import File from './File';
 
 
-const theme = createTheme();
+import isWeekend from 'date-fns/isWeekend';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import axios from 'axios';
+
+
+
 
 export default function SignIn() {
+
+
+
+    const theme = createTheme();
+
+    const [name, setName] = React.useState('');
+    const [venue, setVenue] = React.useState('');
+    const [file, setFile] = React.useState([]);
+    const [date, setDate] = React.useState(new Date());
+
+    const handleName = (event) => {
+        setName(event.target.value);
+    }
+
+    const handleVenue = (event) => {
+        setVenue(event.target.value);
+    }
+
+
+
+
+
+
     const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+
+        if (file !== []) {
+
+            event.preventDefault();
+            var formdata = {
+                name: name,
+                venue: venue,
+                file: file,
+                date: date
+            }
+
+            console.log(formdata);
+
+            axios.post(" http://localhost:4000/img/", formdata)
+                .then(function (response) {
+                    console.log(response);
+                })
+        }
+        else {
+            alert('Please upload a file');
+        }
+
+
+
+
+    }
+
+
+
+
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -39,27 +92,49 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h1" variant="h5">
                         Upload your Moments...
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             id="name"
-                            label="Trip to Hollywood..."
+                            label="Like Felicity..."
                             name="name"
-                            autoComplete="Trip to Hollywood..."
                             autoFocus
+                            onChange={handleName}
                         />
-                        <Tags/>
-                        
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="venue"
+                            label="Felicity Ground..."
+                            name="venue"
+                            autoFocus
+                            onChange={handleVenue}
+                        />
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <StaticDatePicker
+                                orientation="landscape"
+                                openTo="day"
+                                value={date}
+                                shouldDisableDate={isWeekend}
+                                onChange={(newValue) => {
+                                    setDate(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                        <File setFile={setFile} />
+
+
+
                         <Button
-                            type="submit"
+                            onClick={handleSubmit}
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
