@@ -44,25 +44,13 @@ router.post("/addtag", (req, res) => {
 					console.log(err)
 				}
 				else {
-					res.status(200).json(status: 'success')
+					res.status(200).json({status: 'success'})
 				}
-			}
+			})
 		})
 		.catch((error) => {
 			console.log(error);
 		});
-
-	var myquery = { _uid: req.body.id };
-	var newvalues = { $set: { address: "Canyon 123" } };
-  dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
-    newItem.save()
-        .then(item => {
-            res.status(200).json(item);
-			pyStart()
-        })
-        .catch(err => {
-            res.status(400).send(err);
-        });
 });
 // POST request 
 // Add a user to db
