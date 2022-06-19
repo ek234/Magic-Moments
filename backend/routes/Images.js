@@ -19,10 +19,23 @@ const Img = require("../models/Images");
 
 // NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
 
+async function pyStart () {
+	const proc = spawn( "python3", ["scripts/facedetect.py"] )
+	console.log("pyyy")
+	proc.stdout.on('data', function(data) {
+		console.log(data.toString());
+	} )
+	console.log("aa")
+	proc.stderr.on('data', function(data) {
+		console.log(data.toString());
+	} )
+}
+
 // POST request 
 // Add a user to db
 router.post("/", (req, res) => {
     const newItem = new Img({
+		occasion: req.body.name,
         venue: req.body.venue,
         date: req.body.date,
         img: req.body.file
@@ -31,7 +44,9 @@ router.post("/", (req, res) => {
     newItem.save()
         .then(item => {
             res.status(200).json(item);
-			const python = spawn( "python3", ["../scripts/facedetect.py"] )
+			console.log("submitted")
+			pyStart()
+			console.log("ii")
         })
         .catch(err => {
             res.status(400).send(err);

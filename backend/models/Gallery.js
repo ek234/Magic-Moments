@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ItemSchema = new Schema({
+	occasion: {
+		type: String,
+		required: false
+	},
 	img: {
 		type: String,
 		required: true

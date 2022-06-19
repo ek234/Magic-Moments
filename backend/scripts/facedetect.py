@@ -1,11 +1,22 @@
 from pymongo import MongoClient
 import io
+import base64
 import face_recognition
-client = MongoClient('mongodb://localhost:27017/magicmoments')
-db = client['magicmoments']
+
+import yaml
+dbLocation, dbName = '', ''
+print('hi')
+with open("db.yml", "r") as dbConfig:
+    try:
+        dbconf = yaml.safe_load(dbConfig)
+        dbLocation = dbconf['url']
+        dbName = dbconf['name']
+    except yaml.YAMLError as exc:
+        print(exc)
+db = MongoClient(dbLocation)[dbName]
 template = db['template']
 gallery = db['gallery']
-image_tmp = db['image']
+image_tmp = db['images']
 
 def addImages ( entries ):
     templateData = template.find()
@@ -15,7 +26,11 @@ def addImages ( entries ):
         knownFaces.append(temp['face'])
         knownIDs.append(temp['_id'])
     for entry in entries :
-        persons = face_recognition.face_encodings(face_recognition.load_image_file(io.BytesIO(entry['img'])))
+        str64 = entry['img'].split(',')[1]
+        strb = str64.encode('utf-8')
+        bstr = base64.b64decode(strb)
+        bfile = io.BytesIO(bstr)
+        persons = face_recognition.face_encodings(face_recognition.load_image_file(bfile))
         people = []
         for person in persons :
             result = face_recognition.compare_faces(knownFaces, person)
@@ -40,6 +55,7 @@ if __name__ == '__main__':
     newEntries = []
     for img in imgs :
         newEntries.append({
+            'occasion': img['occasion'],
             'img': img['img'],
             'tags': [img['venue']],
             'date': img['date'],
