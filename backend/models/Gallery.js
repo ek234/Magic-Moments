@@ -25,4 +25,4 @@ const ItemSchema = new Schema({
 	}
 });
 
-module.exports = Images = mongoose.model("Images", ItemSchema);
+module.exports = Gallery = mongoose.model("Gallery", ItemSchema);
