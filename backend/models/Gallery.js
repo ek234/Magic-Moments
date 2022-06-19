@@ -23,6 +23,6 @@ const ItemSchema = new Schema({
 		type: Date,
 		required: true
 	}
-});
+}, { collection : 'gallery' });
 
 module.exports = Gallery = mongoose.model("Gallery", ItemSchema);

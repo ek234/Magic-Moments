@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -25,21 +25,17 @@ const theme = createTheme();
 
 export default function Album() {
 
-    const [images, setImages] = React.useState([]);
-    axios.get("http://localhost:4000/images/getimages")
-        .then(res => {
-            setImages(res.data);
-            console.log(res.data);
-
-            // for(let i=0; i<res.data.length; i++){
-            //     ;
-            // }
-        }
-        )
-        .catch(err => {
-            console.log(err);
-        }
-        )
+    const [images, setImages] = useState([]);
+	useEffect(() => {
+		axios.get("http://localhost:4000/img/getimages")
+			.then(res => {
+				setImages(res.data);
+				console.log(res.data);
+			})
+			.catch(err => {
+				console.log(err);
+			})
+	}, [])
 
 
 

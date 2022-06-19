@@ -4,18 +4,23 @@ const { spawn } = require("child_process")
 
 // Load User model
 const Img = require("../models/Images");
+const Gal = require("../models/Gallery");
 
 // GET request 
 // Getting all the users
-// router.get("/", function(req, res) {
-//     User.find(function(err, users) {
-// 		if (err) {
-// 			console.log(err);
-// 		} else {
-// 			res.json(users);
-// 		}
-// 	})
-// });
+router.get("/getimages", async function(req, res) {
+//	Gal.find({}).toArray(function(err, result) {
+//		if (err) throw err;
+//		console.log(result);
+//	});
+	Gal.find({})
+		.then( g => {
+			return res.status(200).json(g);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+});
 
 // NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
 
