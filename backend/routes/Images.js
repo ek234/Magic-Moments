@@ -36,7 +36,7 @@ router.post("/postImage", (req, res) => {
 		occasion: req.body.name,
         venue: req.body.venue,
         date: req.body.date,
-        img: req.body.files
+        img: req.body.imgs
     });
 
     newItem.save()

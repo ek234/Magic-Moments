@@ -13,15 +13,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tags from './Tags';
 // import File from './File';
 
-
 import isWeekend from 'date-fns/isWeekend';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import axios from 'axios';
-
-
-
 
 export default function SignIn() {
 
@@ -29,36 +25,30 @@ export default function SignIn() {
 
     const [name, setName] = React.useState('');
     const [venue, setVenue] = React.useState('');
-    const [files, setFiles] = React.useState([]);
+    const [files, setFiles] = React.useState({});
     const [date, setDate] = React.useState(new Date());
 
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file)
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            }
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-    }
+    async function convertBase64 (file) {
+		let b64 = await new Promise((resolve, reject) => {
+			let reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = error => reject(error);
+			reader.readAsDataURL(file);
+		});
+		return b64;
+	};
+
+	async function convAll () {
+		var fs = []
+		for ( let i = 0; i < files.length; i++ ) {
+			fs.push(await convertBase64(files[i]))
+		}
+		return fs
+	}
 
     const handleFileRead = async (event) => {
-
-        var newElements = [];
-        for ( let file in event.target.files ) {
-            newElements.push(await convertBase64(file));
-            // files[i] = newValue;
-        }
-        setFiles([...files, ...newElements]);
-        // const file = event.target.files[0]
-        // const base64 = await convertBase64(file)
-        // props.setFile(base64)
-        // console.log(base64)
-        console.log(files);
+		setFiles(event.target.files)
     }
 
     const handleName = (event) => {
@@ -74,30 +64,23 @@ export default function SignIn() {
     const handleSubmit = (event) => {
         // if (file !== []) {
         event.preventDefault();
-        var formdata = {
-            name: name,
-            venue: venue,
-            files: files,
-            date: date
-        }
+		convAll()
+			.then( fs => {
+				var formdata = {
+					name: name,
+					venue: venue,
+					imgs: fs,
+					date: date
+				}
 
-        console.log(formdata);
-
-        axios.post("http://localhost:4000/img/postImage", formdata)
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-        // }
-        // else {
-        //     alert('Please upload a file');
-        // }
-
-
-
-
+				axios.post("http://localhost:4000/img/postImage", formdata)
+					.then(function (response) {
+						console.log(response);
+					})
+					.catch(function (error) {
+						console.log(error);
+					})
+			})
     }
 
     return (

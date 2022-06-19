@@ -5,7 +5,7 @@ import face_recognition
 
 import yaml
 dbLocation, dbName = '', ''
-print('hi')
+print('hi im python')
 with open("db.yml", "r") as dbConfig:
     try:
         dbconf = yaml.safe_load(dbConfig)
@@ -26,7 +26,11 @@ def addImages ( entries ):
         knownFaces.append(temp['face'])
         knownIDs.append(temp['_id'])
     for entry in entries :
-        str64 = entry['img'].split(',')[1]
+        str64 = ""
+        try :
+            str64 = entry['img'].split(',')[1]
+        except :
+            print(entry)
         strb = str64.encode('utf-8')
         bstr = base64.b64decode(strb)
         bfile = io.BytesIO(bstr)
@@ -51,10 +55,12 @@ def clear():
     gallery.delete_many({})
 
 if __name__ == '__main__':
-    newBucket = list(image_tmp.find())
+    newBuckets = list(image_tmp.find())
     newEntries = []
-    for bucket in newBucket :
+    for bucket in newBuckets :
+        print(bucket)
         for img in bucket['img'] :
+            print(img)
             newEntries.append({
                 'occasion': bucket['occasion'],
                 'img': img,
