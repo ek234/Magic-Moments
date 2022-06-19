@@ -21,6 +21,7 @@ import axios from 'axios';
 import { TextField } from '@mui/material';
 import Fuse from 'fuse.js'
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 
 
 
@@ -30,6 +31,9 @@ export default function Album() {
 
     const [images, setImages] = useState([]);
     const [allImages, setAllImages] = useState([]);
+    const [showFaces, setShowFaces] = useState(false);
+    const [templates, setTemplates] = useState([]);
+
 	useEffect(() => {
 		axios.get("http://localhost:4000/img/getimages")
 			.then(res => {
@@ -41,6 +45,23 @@ export default function Album() {
 				console.log(err);
 			})
 	}, []);
+    const [taginput, setTagInput] = useState(false);
+    const [temptag, setTempTag] = useState('');
+    const AddTag = () => {
+
+        var id = {
+            id: localStorage.getItem('tempimageid'),
+            addtag: temptag
+
+        }
+
+        axios.post("http://localhost:4000/img/addtag", id)
+            .then(res => {
+                console.log(res.data);
+            })
+
+
+    }
 
     function handleFuzzySearch() {
         console.log("fuzzy searching");
@@ -135,6 +156,24 @@ export default function Album() {
                                 <SearchIcon />
                             </Button>
                         </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => setShowFaces(!showFaces)}
+                            >
+                                Faces
+                            </Button>
+                        </Grid>
+                        {showFaces ?
+                            templates.map((template, index) => (
+                                <Grid item xs={12} sm={6} md={4} key={index}>
+                                    <img src={template.src} alt={template.title} />
+                                </Grid>
+                            ))
+                            :
+                            null
+                        }
                     </Grid>
                     <Grid container spacing={4}>
                         {images.map((card) => (
@@ -161,9 +200,32 @@ export default function Album() {
                                         </Typography> */}
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">View</Button>
-                                        <Button size="small">Edit</Button>
+                                    <Button size="small" onClick={(e) => {
+                                        setTagInput(!taginput);
+                                        localStorage.setItem("tempimageid", card.id);
+                                        }
+                                        }>
+                                            Add Tag
+                                    </Button>
                                     </CardActions>
+                                    <Box component="form" noValidate sx={{ mt: 1 }} >
+                                        {taginput ? (
+                                            <div>
+                                                <TextField id="outlined" size="small" fullWidth onChange={(e) => {
+                                                    setTempTag(e);
+                                                }}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <Button size="small" onClick={AddTag}>
+                                                                <AddIcon />
+                                                            </Button>
+
+                                                        ),
+                                                    }} />
+
+                                            </div>
+                                        ) : null}
+                                    </Box>
                                 </Card>
                             </Grid>
                         ))}
