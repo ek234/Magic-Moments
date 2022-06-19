@@ -21,11 +21,9 @@ const Img = require("../models/Images");
 
 async function pyStart () {
 	const proc = spawn( "python3", ["scripts/facedetect.py"] )
-	console.log("pyyy")
 	proc.stdout.on('data', function(data) {
 		console.log(data.toString());
 	} )
-	console.log("aa")
 	proc.stderr.on('data', function(data) {
 		console.log(data.toString());
 	} )
@@ -44,9 +42,7 @@ router.post("/", (req, res) => {
     newItem.save()
         .then(item => {
             res.status(200).json(item);
-			console.log("submitted")
 			pyStart()
-			console.log("ii")
         })
         .catch(err => {
             res.status(400).send(err);
