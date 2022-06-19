@@ -7,14 +7,18 @@ const ItemSchema = new Schema({
 		type: String,
 		required: false
 	},
-	venue: {
-		type: String,
-		required: false
-	},
 	img: {
 		type: String,
 		required: true
 	},
+	people: [{
+		type: String,
+		required: false
+	}],
+	tags: [{
+		type: String,
+		required: true
+	}],
 	date:{
 		type: Date,
 		required: true

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -25,8 +25,6 @@ import axios from 'axios';
 
 export default function SignIn() {
 
-
-
     const theme = createTheme();
 
     const [name, setName] = React.useState('');
@@ -41,11 +39,6 @@ export default function SignIn() {
     const handleVenue = (event) => {
         setVenue(event.target.value);
     }
-
-
-
-
-
 
     const handleSubmit = (event) => {
 
@@ -74,11 +67,6 @@ export default function SignIn() {
 
 
     }
-
-
-
-
-
 
     return (
         <ThemeProvider theme={theme}>
