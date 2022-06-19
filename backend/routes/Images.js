@@ -31,12 +31,12 @@ async function pyStart () {
 
 // POST request 
 // Add a user to db
-router.post("/", (req, res) => {
+router.post("/postImage", (req, res) => {
     const newItem = new Img({
 		occasion: req.body.name,
         venue: req.body.venue,
         date: req.body.date,
-        img: req.body.file
+        img: req.body.files
     });
 
     newItem.save()

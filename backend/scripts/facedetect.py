@@ -51,15 +51,16 @@ def clear():
     gallery.delete_many({})
 
 if __name__ == '__main__':
-    imgs = list(image_tmp.find())
+    newBucket = list(image_tmp.find())
     newEntries = []
-    for img in imgs :
-        newEntries.append({
-            'occasion': img['occasion'],
-            'img': img['img'],
-            'tags': [img['venue']],
-            'date': img['date'],
-            'people': [],
-        })
+    for bucket in newBucket :
+        for img in bucket['img'] :
+            newEntries.append({
+                'occasion': bucket['occasion'],
+                'img': img,
+                'tags': [bucket['venue']],
+                'date': bucket['date'],
+                'people': [],
+            })
     addImages(newEntries)
     image_tmp.delete_many({})
