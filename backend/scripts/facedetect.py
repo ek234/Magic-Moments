@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from PIL import Image
 import io
 import base64
 import face_recognition
@@ -26,26 +27,39 @@ def addImages ( entries ):
         knownFaces.append(temp['face'])
         knownIDs.append(temp['_id'])
     for entry in entries :
-        str64 = ""
-        try :
-            str64 = entry['img'].split(',')[1]
-        except :
-            print(entry)
+        str64 = entry['img'].split(',')[1]
         strb = str64.encode('utf-8')
         bstr = base64.b64decode(strb)
         bfile = io.BytesIO(bstr)
-        persons = face_recognition.face_encodings(face_recognition.load_image_file(bfile))
+        image = face_recognition.load_image_file(bfile)
+        locations = face_recognition.face_locations(image)
+
+        faces = []
+        for loc in locations :
+            top, right, bottom, left = loc
+            # You can access the actual face itself like this:
+            face_image = image[top:bottom, left:right]
+            pil_image = Image.fromarray(face_image)
+
+            imgByteArr = io.BytesIO()
+            pil_image.save(imgByteArr, format="PNG")
+            imgByteArr = imgByteArr.getvalue()
+            faces.append( base64.b64encode(imgByteArr).decode('utf-8') )
         people = []
-        for person in persons :
-            result = face_recognition.compare_faces(knownFaces, person)
-            print(result)
+        for face in faces :
+            strb = face.encode('utf-8')
+            bstr = base64.b64decode(strb)
+            bfile = io.BytesIO(bstr)
+            image = face_recognition.load_image_file(bfile)
+            face_enc = face_recognition.face_encodings(image)[0]
+            result = face_recognition.compare_faces(knownFaces, face_enc)
             try :
                 people.append(knownIDs[result.index(True)])
             except ValueError :
-                newTemplate = { 'face': person.tolist() }
+                newTemplate = { 'face': face_enc.tolist(), 'image': face }
                 uid = template.insert_one(newTemplate).inserted_id
                 people.append(uid)
-                knownFaces.append(person.tolist())
+                knownFaces.append(face_enc.tolist())
                 knownIDs.append(uid)
         entry['people'] = people
         gallery.insert_one(entry)
@@ -58,9 +72,7 @@ if __name__ == '__main__':
     newBuckets = list(image_tmp.find())
     newEntries = []
     for bucket in newBuckets :
-        print(bucket)
         for img in bucket['img'] :
-            print(img)
             newEntries.append({
                 'occasion': bucket['occasion'],
                 'img': img,

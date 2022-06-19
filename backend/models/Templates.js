@@ -7,9 +7,13 @@ const ItemSchema = new Schema({
 //        required: false
 //    },
     faces: [{
-        type: Buffer,
+        type: Number,
         required: true
     }],
+	img: {
+		type: String,
+		required: true
+	}
 });
 
 module.exports = Templates = mongoose.model("Templates", ItemSchema);
