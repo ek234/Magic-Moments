@@ -37,7 +37,7 @@ export default function Upload(props) {
     // }
 
     const [files, setFiles] = React.useState([]);
-    
+
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -56,10 +56,9 @@ export default function Upload(props) {
 
         for (let i = 0; i < event.target.files.length; i++) {
             const newValue = await convertBase64(event.target.files[i]);
-            setFiles([...files, newValue]);
+            // files[i] = newValue;
 
-            
-
+            files.push(newValue);
 
         }
         // const file = event.target.files[0]
