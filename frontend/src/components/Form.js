@@ -10,8 +10,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Tags from './Tags';
-import File from './File';
+// import Tags from './Tags';
+// import File from './File';
+
 
 
 import isWeekend from 'date-fns/isWeekend';
@@ -29,8 +30,41 @@ export default function SignIn() {
 
     const [name, setName] = React.useState('');
     const [venue, setVenue] = React.useState('');
-    const [file, setFile] = React.useState([]);
+    var file = [];
     const [date, setDate] = React.useState(new Date());
+
+
+    // for file upload
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file)
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            }
+            fileReader.onerror = (error) => {
+                reject(error);
+            }
+        })
+    }
+
+    const handleFileRead = async (event) => {
+
+        for (let i = 0; i < event.target.files.length; i++) {
+            const newValue = await convertBase64(event.target.files[i]);
+            // files[i] = newValue;
+
+            file.push(newValue);
+
+        }
+        // const file = event.target.files[0]
+        // const base64 = await convertBase64(file)
+        // props.setFile(base64)
+        // console.log(base64)
+        console.log(file);
+    }
+
+    // for file upload -*-
 
     const handleName = (event) => {
         setName(event.target.value);
@@ -40,28 +74,34 @@ export default function SignIn() {
         setVenue(event.target.value);
     }
 
+
+
     const handleSubmit = (event) => {
 
-        if (file !== []) {
+        // if (file !== []) {
 
-            event.preventDefault();
-            var formdata = {
-                name: name,
-                venue: venue,
-                file: file,
-                date: date
-            }
+        // setFile(localStorage.getItem('files'))
+        // console.log(file)
 
-            console.log(formdata);
 
-            axios.post(" http://localhost:4000/img/", formdata)
-                .then(function (response) {
-                    console.log(response);
-                })
+        event.preventDefault();
+        var formdata = {
+            name: name,
+            venue: venue,
+            file: file,
+            date: date
         }
-        else {
-            alert('Please upload a file');
-        }
+
+        console.log(formdata);
+
+        axios.post(" http://localhost:4000/img/", formdata)
+            .then(function (response) {
+                console.log(response);
+            })
+        // }
+        // else {
+        //     alert('Please upload a file');
+        // }
 
 
 
@@ -117,7 +157,23 @@ export default function SignIn() {
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
-                        <File setFile={setFile} />
+                        <TextField
+                            // id="originalFileName"
+                            type="file"
+                            webkitdirectory="true" // for chrome
+                            inputProps={{ accept: 'image/*, .xlsx, .xls, .csv, .pdf, .pptx, .pptm, .ppt', multiple: true }}
+                            required
+
+                            name="originalFileName"
+                            onChange={e => handleFileRead(e)}
+                            size="small"
+                            // variant="standard"
+                            id="outlined-basic"
+                            label="Outlined"
+                            variant="outlined"
+                        // type="file"
+
+                        />
 
 
 

@@ -11,10 +11,10 @@ const ItemSchema = new Schema({
 		type: String,
 		required: false
 	},
-	img: {
+	img: [{
 		type: String,
 		required: true
-	},
+	}],
 	date:{
 		type: Date,
 		required: true

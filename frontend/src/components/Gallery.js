@@ -20,26 +20,34 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import axios from 'axios';
 
 
+import Filters from './Filters';
+
+
 
 const theme = createTheme();
 
 export default function Album() {
 
     const [images, setImages] = React.useState([]);
-    axios.get("http://localhost:4000/images/getimages")
-        .then(res => {
-            setImages(res.data);
-            console.log(res.data);
+    // axios.get("http://localhost:4000/images/getimages")
+    //     .then(res => {
+    //         setImages(res.data);
+    //         console.log(res.data);
 
-            // for(let i=0; i<res.data.length; i++){
-            //     ;
-            // }
-        }
-        )
-        .catch(err => {
-            console.log(err);
-        }
-        )
+    //         // for(let i=0; i<res.data.length; i++){
+    //         //     ;
+    //         // }
+    //     }
+    //     )
+    //     .catch(err => {
+    //         console.log(err);
+    //     }
+    //     )
+    
+    const handleFilters = () => {
+        console.log("filters");
+    }
+    
 
 
 
@@ -84,9 +92,15 @@ export default function Album() {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <Button variant="contained" sx={{ width: 200 }}> <FilterAltIcon /> &nbsp; Apply Filters</Button>
+                            
+
+                            <Button variant="contained" sx={{ width: 200 }} onClick={handleFilters}> <FilterAltIcon /> &nbsp; Apply Filters</Button>
+
                         </Stack>
+
+                        
                     </Container>
+                    <Filters />
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="md">
                     {/* End hero unit */}
