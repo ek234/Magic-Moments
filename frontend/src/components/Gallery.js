@@ -45,13 +45,23 @@ export default function Album() {
                 console.log(err);
             })
     }, []);
-    const [taginput, setTagInput] = useState(false);
-    const [temptag, setTempTag] = useState('');
-    const AddTag = () => {
+    useEffect(() => {
+        axios.get("http://localhost:4000/img/getTemplates")
+            .then(res => {
+                setTemplates(res.data);
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, []);
 
+    const [tagInput, setTagInput] = useState(false);
+    const [tempTag, setTempTag] = useState('');
+    const AddTag = () => {
         var id = {
             id: localStorage.getItem('tempimageid'),
-            addtag: temptag
+            addtag: tempTag
         }
         console.log(id);
 
@@ -62,10 +72,7 @@ export default function Album() {
             })
             .catch(err => {
                 console.log(err);
-            }
-            )
-
-
+            })
     }
 
     function handleFuzzySearch() {
@@ -156,7 +163,7 @@ export default function Album() {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => handleFuzzySearch()}
+                                onClick={handleFuzzySearch}
                             >
                                 <SearchIcon />
                             </Button>
@@ -173,7 +180,7 @@ export default function Album() {
                         {showFaces ?
                             templates.map((template, index) => (
                                 <Grid item xs={12} sm={6} md={4} key={index}>
-                                    <img src={template.src} alt={template.title} />
+                                    <img src={"data:image;base64, " + template.image} alt={template._id} />
                                 </Grid>
                             ))
                             :
@@ -188,10 +195,7 @@ export default function Album() {
                                 >
                                     <CardMedia
                                         component="img"
-                                        sx={{
-                                            // 16:9
-                                            pt: '56.25%',
-                                        }}
+                                        sx={{pt: '56.25%'}} // 16:9
                                         image={card.img}
                                         alt="random"
                                     />
@@ -206,7 +210,7 @@ export default function Album() {
                                     </CardContent>
                                     <CardActions>
                                         <Button size="small" onClick={(e) => {
-                                            setTagInput(!taginput);
+                                            setTagInput(!tagInput);
                                             localStorage.setItem("tempimageid", card._id);
                                         }
                                         }>
@@ -214,7 +218,7 @@ export default function Album() {
                                         </Button>
                                     </CardActions>
                                     <Box component="form" noValidate sx={{ mt: 1 }} >
-                                        {taginput ? (
+                                        {tagInput ? (
                                             <div>
                                                 <TextField id="outlined" size="small" fullWidth onChange={(e) => {
                                                     setTempTag(e.target.value);

@@ -15,7 +15,7 @@ with open("db.yml", "r") as dbConfig:
     except yaml.YAMLError as exc:
         print(exc)
 db = MongoClient(dbLocation)[dbName]
-template = db['template']
+template = db['templates']
 gallery = db['gallery']
 image_tmp = db['images']
 
@@ -51,16 +51,18 @@ def addImages ( entries ):
             bstr = base64.b64decode(strb)
             bfile = io.BytesIO(bstr)
             image = face_recognition.load_image_file(bfile)
-            face_enc = face_recognition.face_encodings(image)[0]
-            result = face_recognition.compare_faces(knownFaces, face_enc)
-            try :
-                people.append(knownIDs[result.index(True)])
-            except ValueError :
-                newTemplate = { 'face': face_enc.tolist(), 'image': face }
-                uid = template.insert_one(newTemplate).inserted_id
-                people.append(uid)
-                knownFaces.append(face_enc.tolist())
-                knownIDs.append(uid)
+            face_encs = face_recognition.face_encodings(image)
+            if len(face_encs) > 0:
+                face_enc = face_encs[0]
+                result = face_recognition.compare_faces(knownFaces, face_enc)
+                try :
+                    people.append(knownIDs[result.index(True)])
+                except ValueError :
+                    newTemplate = { 'face': face_enc.tolist(), 'image': face }
+                    uid = template.insert_one(newTemplate).inserted_id
+                    people.append(uid)
+                    knownFaces.append(face_enc.tolist())
+                    knownIDs.append(uid)
         entry['people'] = people
         gallery.insert_one(entry)
 

@@ -5,6 +5,7 @@ const { spawn } = require("child_process")
 // Load User model
 const Img = require("../models/Images");
 const Gal = require("../models/Gallery");
+const Tem = require("../models/Templates");
 
 // GET request 
 // Getting all the users
@@ -22,7 +23,16 @@ router.get("/getimages", async function(req, res) {
 		});
 });
 
-// NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
+// Getting all templates
+router.get("/getTemplates", async function(req, res) {
+	Tem.find({}, {image:1})
+		.then( t => {
+			return res.status(200).json(t);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+});
 
 async function pyStart () {
 	const proc = spawn( "python3", ["scripts/facedetect.py"] )
