@@ -7,12 +7,9 @@ const PORT = 4000;
 const DB_NAME = "magicmoments"
 
 // routes
-var testAPIRouter = require("./routes/testAPI");
 var ImageRouter = require("./routes/Images");
 
 app.use(cors());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({limit: "500mb", extended: true, parameterLimit:500000}));
 
@@ -24,7 +21,6 @@ connection.once('open', function() {
 })
 
 // setup API endpoints
-app.use("/testAPI", testAPIRouter);
 app.use("/img", ImageRouter);
 
 

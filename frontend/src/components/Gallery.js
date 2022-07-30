@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { TextField } from '@mui/material';
 import Fuse from 'fuse.js'
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
+import { FilterAlt as FilterAltIcon, Search as SearchIcon, Add as AddIcon }from '@mui/icons-material';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    CssBaseline,
+    Grid,
+    Stack,
+    Box,
+    Typography,
+    Container,
+    TextField,
+} from '@mui/material';
 
-
-
-const theme = createTheme();
-
-export default function Album() {
+export default function Album () {
 
     const [images, setImages] = useState([]);
     const [allImages, setAllImages] = useState([]);
@@ -102,16 +92,8 @@ export default function Album() {
 
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <CssBaseline />
-            {/* <AppBar position="relative">
-                <Toolbar>
-                    <CameraIcon sx={{ mr: 2 }} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Album layout
-                    </Typography>
-                </Toolbar>
-            </AppBar> */}
             <main>
                 {/* Hero unit */}
                 <Box
@@ -126,12 +108,16 @@ export default function Album() {
                             component="h1"
                             variant="h2"
                             align="center"
-                            color="text.primary"
                             gutterBottom
                         >
                             Album layout
                         </Typography>
-                        <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                        <Typography
+                            variant="h5"
+                            align="center"
+                            color="text.secondary"
+                            paragraph
+                        >
                             Something short and leading about the collection below—its contents,
                             the creator, etc. Make it short and sweet, but not too short so folks
                             don&apos;t simply skip over it entirely.
@@ -145,10 +131,7 @@ export default function Album() {
                             <Button variant="contained" sx={{ width: 200 }}> <FilterAltIcon /> &nbsp; Apply Filters</Button>
                         </Stack>
                     </Container>
-                </Box>
-                <Container sx={{ py: 8 }} maxWidth="md">
-                    {/* End hero unit */}
-                    <Grid container spacing={4}>
+                    <Grid container spacing={4} maxWidth="md">
                         <Grid item xs={4}>
                             <TextField
                                 id="fuzzySearch"
@@ -162,7 +145,6 @@ export default function Album() {
                         <Grid item xs={4}>
                             <Button
                                 variant="contained"
-                                color="primary"
                                 onClick={handleFuzzySearch}
                             >
                                 <SearchIcon />
@@ -171,7 +153,6 @@ export default function Album() {
                         <Grid item xs={4}>
                             <Button
                                 variant="contained"
-                                color="primary"
                                 onClick={() => setShowFaces(!showFaces)}
                             >
                                 Faces
@@ -187,6 +168,9 @@ export default function Album() {
                             null
                         }
                     </Grid>
+                </Box>
+                <Container sx={{ py: 8 }} maxWidth="md">
+                    {/* End hero unit */}
                     <Grid container spacing={4}>
                         {images.map((card, idx) => (
                             <Grid item key={idx} xs={12} sm={6} md={4}>
@@ -252,6 +236,6 @@ export default function Album() {
 
             </Box>
             {/* End footer */}
-        </ThemeProvider>
+        </>
     );
 }

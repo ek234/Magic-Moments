@@ -1,25 +1,15 @@
-import * as React from 'react';
-import { useState, useEffect } from "react";
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
 import axios from "axios";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-const theme = createTheme();
+//import { LockOutlined as LockOutlined } from '@mui/icons-material';
+import {
+    Button,
+    Container,
+    Box,
+    Grid,
+    Link,
+    TextField,
+    CssBaseline,
+} from '@mui/material';
 
 function AddOns(props) {
     const handleAddOnSubmit = (event) => {
@@ -165,7 +155,6 @@ export default function AddItem() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -196,6 +185,5 @@ export default function AddItem() {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     );
 }

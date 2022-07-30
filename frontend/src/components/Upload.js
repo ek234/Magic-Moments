@@ -1,33 +1,27 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Tags from './Tags';
-// import File from './File';
-
+import { useState } from 'react';
+import axios from 'axios';
 import isWeekend from 'date-fns/isWeekend';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import axios from 'axios';
+import {
+    Button,
+    CssBaseline,
+    TextField,
+    Box,
+    Typography,
+    Container,
+} from '@mui/material';
 
-export default function SignIn() {
+//import Tags from './Tags';
 
-    const theme = createTheme();
 
-    const [name, setName] = React.useState('');
-    const [venue, setVenue] = React.useState('');
-    const [files, setFiles] = React.useState({});
-    const [date, setDate] = React.useState(new Date());
+export default function SignIn () {
 
+    const [name, setName] = useState('');
+    const [venue, setVenue] = useState('');
+    const [files, setFiles] = useState({});
+    const [date, setDate] = useState(new Date());
 
     async function convertBase64 (file) {
 		let b64 = await new Promise((resolve, reject) => {
@@ -59,8 +53,6 @@ export default function SignIn() {
         setVenue(event.target.value);
     }
 
-
-
     const handleSubmit = (event) => {
         // if (file !== []) {
         event.preventDefault();
@@ -84,11 +76,11 @@ export default function SignIn() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" >
                 <CssBaseline />
                 <Box
                     sx={{
+                        bgcolor: 'background.paper',
                         marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
@@ -104,7 +96,7 @@ export default function SignIn() {
                             required
                             fullWidth
                             id="name"
-                            label="Like Felicity..."
+                            label="event"
                             name="name"
                             autoFocus
                             onChange={handleName}
@@ -114,7 +106,7 @@ export default function SignIn() {
                             required
                             fullWidth
                             id="venue"
-                            label="Felicity Ground..."
+                            label="location"
                             name="venue"
                             autoFocus
                             onChange={handleVenue}
@@ -133,24 +125,16 @@ export default function SignIn() {
                             />
                         </LocalizationProvider>
                         <TextField
-                            // id="originalFileName"
                             type="file"
                             webkitdirectory="true" // for chrome
-                            inputProps={{ accept: 'image/*, .xlsx, .xls, .csv, .pdf, .pptx, .pptm, .ppt', multiple: true }}
+                            inputProps={{
+                                accept: 'image/*',
+                                multiple: true,
+                            }}
                             required
-
                             name="originalFileName"
                             onChange={e => handleFileRead(e)}
-                            size="small"
-                            // variant="standard"
-                            id="outlined-basic"
-                            label="Outlined"
-                            variant="outlined"
-                        // type="file"
-
                         />
-
-
 
                         <Button
                             onClick={handleSubmit}
@@ -164,6 +148,5 @@ export default function SignIn() {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     );
 }

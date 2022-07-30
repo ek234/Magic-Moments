@@ -1,25 +1,19 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import Stack from '@mui/material/Stack';
-import { useState } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-
-// import Tags from './Tags';
+import { useState, useRef }from 'react';
 import axios from 'axios';
+import { LocalizationProvider, AdapterDateFns, MobileDatePicker } from '@mui/x-date-pickers';
 import { Cancel, Tag } from "@mui/icons-material";
-import { FormControl } from "@mui/material";
-import { useRef } from "react";
+import {
+    TextField,
+    Stack,
+    Checkbox,
+    Typography,
+    Box,
+    Grid,
+    Button,
+    FormControl,
+} from '@mui/material';
 
-
-
-const App = () => {
+export default function Filter () {
     // const [venue, setVenue] = useState('');
     const [date, setDate] = useState(new Date());
 
@@ -42,18 +36,12 @@ const App = () => {
         tagRef.current.value = "";
     };
 
-
-    // console.log(people);
-
     var filters = {
         date: date,
         people: people,
         occassion: occassion,
         tags: tags
     }
-
-
-
 
     // axios.get('api here', filters)
     //     .then(res => {
@@ -63,11 +51,6 @@ const App = () => {
     const handleUnique = (e) => {
         setPeople(!people);
     }
-
-
-
-
-
 
     return (
         <>
@@ -152,9 +135,7 @@ const App = () => {
     );
 };
 
-export default App;
-
-
+export default Filter;
 
 const Tags = ({ data, handleDelete }) => {
     return (
